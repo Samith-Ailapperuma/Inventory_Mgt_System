@@ -27,6 +27,8 @@ func main() {
 	router.HandleFunc("/vendors", vendorHandler.GetVendors).Methods("GET")
 	router.HandleFunc("/vendors", vendorHandler.CreateVendor).Methods("POST")
 	router.HandleFunc("/allSales", salesHandler.GetAllSales).Methods("GET")
+	router.HandleFunc("/itemsOfSale", salesHandler.GetAllItemsInSale).Methods("GET")
+	router.HandleFunc("/addItemToSale", salesHandler.AddItemToSale).Methods("POST")
 
 	log.Println("Server running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
