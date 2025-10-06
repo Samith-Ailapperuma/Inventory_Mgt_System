@@ -20,8 +20,10 @@ func main() {
 
 	vendorRepo := repository.NewVendorRepository(db)
 	salesRepo := repository.NewSalesRepository(db)
+	itemRepo := repository.NewItemRepository(db)
 	vendorHandler := service.NewVendorHandler(vendorRepo)
 	salesHandler := service.NewSalesHandler(salesRepo)
+	itemHandler := service.NewItemHandler(itemRepo)
 
 	router := mux.NewRouter()
 	router.HandleFunc("/vendors", vendorHandler.GetVendors).Methods("GET")
@@ -29,6 +31,8 @@ func main() {
 	router.HandleFunc("/allSales", salesHandler.GetAllSales).Methods("GET")
 	router.HandleFunc("/itemsOfSale", salesHandler.GetAllItemsInSale).Methods("GET")
 	router.HandleFunc("/addItemToSale", salesHandler.AddItemToSale).Methods("POST")
+	router.HandleFunc("/getAllItems", itemHandler.GetAllItems).Methods("GET")
+	router.HandleFunc("/addItem", itemHandler.AddNewItem).Methods("POST")
 
 	log.Println("Server running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
