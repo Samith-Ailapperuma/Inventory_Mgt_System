@@ -15,7 +15,7 @@ func NewVendorRepository(db *sql.DB) *VendorRepository {
 }
 
 func (r *VendorRepository) GetAllVendors() ([]model.Vendor, error) {
-	rows, err := r.DB.Query("SELECT vendorId, vendorName FROM Vendor")
+	rows, err := r.DB.Query("SELECT Vendor_Id, Vendor_Name, Vendor_Address FROM Vendor")
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +24,7 @@ func (r *VendorRepository) GetAllVendors() ([]model.Vendor, error) {
 	var vendors []model.Vendor
 	for rows.Next() {
 		var vendor model.Vendor
-		if err := rows.Scan(&vendor.Vendor_Id, &vendor.Vendor_Name); err != nil {
+		if err := rows.Scan(&vendor.Vendor_Id, &vendor.Vendor_Name, &vendor.Vendor_Address); err != nil {
 			return nil, err
 		}
 		vendors = append(vendors, vendor)
@@ -34,6 +34,6 @@ func (r *VendorRepository) GetAllVendors() ([]model.Vendor, error) {
 }
 
 func (r *VendorRepository) CreateVendor(vendor model.Vendor) error {
-	_, err := r.DB.Exec("INSERT INTO vendor (vendorId, vendorName) VALUES (?, ?)", vendor.Vendor_Id, vendor.Vendor_Name)
+	_, err := r.DB.Exec("INSERT INTO Vendor (Vendor_Id, Vendor_Name, Vendor_Address) VALUES (?, ?, ?)", vendor.Vendor_Id, vendor.Vendor_Name, vendor.Vendor_Address)
 	return err
 }
