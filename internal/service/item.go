@@ -30,13 +30,16 @@ func (h *ItemHandler) AddNewItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := h.Repo.AddNewItem(item)
+	var itemId string
+
+	itemId, err := h.Repo.AddNewItem(item)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"itemID": itemId})
 }
 
 func (h *ItemHandler) GetAllItems(w http.ResponseWriter, r *http.Request) {

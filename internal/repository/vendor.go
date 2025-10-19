@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/Samith-Ailapperuma/Inventory_Mgt_System/internal/model"
 )
@@ -33,7 +34,12 @@ func (r *VendorRepository) GetAllVendors() ([]model.Vendor, error) {
 	return vendors, nil
 }
 
-func (r *VendorRepository) CreateVendor(vendor model.Vendor) error {
-	_, err := r.DB.Exec("INSERT INTO Vendor (Vendor_Id, Vendor_Name, Vendor_Address) VALUES (?, ?, ?)", vendor.Vendor_Id, vendor.Vendor_Name, vendor.Vendor_Address)
-	return err
+func (r *VendorRepository) CreateVendor(vendor model.Vendor) (string, error) {
+	result, err := r.DB.Exec("INSERT INTO Vendor (Vendor_Name, Vendor_Address) VALUES (?, ?)", vendor.Vendor_Name, vendor.Vendor_Address)
+	if err != nil {
+		return "", err
+	}
+
+	id, _ := result.LastInsertId()
+	return fmt.Sprintf("%d", id), nil
 }

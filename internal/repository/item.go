@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/Samith-Ailapperuma/Inventory_Mgt_System/internal/model"
 )
@@ -14,9 +15,14 @@ func NewItemRepository(db *sql.DB) *ItemRepository {
 	return &ItemRepository{DB: db}
 }
 
-func (r *ItemRepository) AddNewItem(item model.Item) error {
-	_, err := r.DB.Exec("INSERT INTO item (Item_Id, Vendor_Id, Item_Name, Unit_Price) VALUES (?, ?, ?, ?)", item.Item_Id, item.Vendor_Id, item.Item_Name, item.Unit_Price)
-	return err
+func (r *ItemRepository) AddNewItem(item model.Item) (string, error) {
+	result, err := r.DB.Exec("INSERT INTO item (Vendor_Id, Item_Name, Unit_Price) VALUES (?, ?, ?)", item.Vendor_Id, item.Item_Name, item.Unit_Price)
+	if err != nil {
+		return "", err
+	}
+
+	id, _ := result.LastInsertId()
+	return fmt.Sprintf("%d", id), nil
 }
 
 func (r *ItemRepository) GetAllItems() ([]model.Item, error) {

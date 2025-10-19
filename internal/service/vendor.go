@@ -32,11 +32,14 @@ func (h *VendorHandler) CreateVendor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := h.Repo.CreateVendor(vendor)
+	var vendorId string
+
+	vendorId, err := h.Repo.CreateVendor(vendor)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"vendorId": vendorId})
 }

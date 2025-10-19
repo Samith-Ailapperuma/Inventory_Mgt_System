@@ -72,7 +72,7 @@ func (r *SalesRepository) AddItemToSale(saleItem model.SaleItem) error {
 
 func (r *SalesRepository) UpdateSaleAmount(saleItem model.SaleItem) error {
 	var UnitPrice float32
-	err := r.DB.QueryRow("SELECT Unit_Price FROM items WHERE Item_Id = ?", saleItem.Item_Id).Scan(&UnitPrice)
+	err := r.DB.QueryRow("SELECT Unit_Price FROM item WHERE Item_Id = ?", saleItem.Item_Id).Scan(&UnitPrice)
 	if err != nil {
 		return err
 	}
