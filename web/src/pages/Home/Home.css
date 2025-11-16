@@ -34,6 +34,8 @@
     justify-content: center;
     gap: 1.5rem;
     flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
   }
   
   .feature-card {
@@ -48,4 +50,54 @@
     margin-top: 3rem;
     color: #555;
   }
+
+  .hamburger{
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    
+    justify-content: space-around;
+    flex-flow: column nowrap;
+    z-index: 10;
+  }
+
+  .burger{
+    width: 2rem;
+    height: 0.25rem;
+    border-radius: 10px;
+    background-color: black;
+    transform-origin: 1px;
+    transition: all 0.3s linear;
+  }
+
+  .dropdown {
+    width: 2rem;
+    height: 2rem;
+    justify-content: space-around;
+    flex-flow: column nowrap;
+    z-index: 10;
+  }
+
+  .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    min-width: 150px;
+    z-index: 10;
+  }
   
+  .dropdown-content a {
+    color: #333;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    text-align: left;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }  

@@ -1,12 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Home.css";
 
-// interface FeatureCardProps {
-//     title: string;
-//     description: string
-// }
-
-function FeatureCard({title, description}) {
+function FeatureCard({ title, description }) {
     return (
         <div>
             <h3>{title}</h3>
@@ -16,27 +11,37 @@ function FeatureCard({title, description}) {
 }
 
 export default function Home() {
+    const [menuOpen, setMenuOpen] = useState(false);
+
     return (
         <div className="home-container">
+            <div className="dropdown">
+                <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+                    <div className="burger" />
+                    <div className="burger" />
+                    <div className="burger" />
+                </div>
+
+                {menuOpen && (
+                    <div className="dropdown-content">
+                        <a href="/vendors">Vendors</a>
+                        <a href="/items">Items</a>
+                    </div>
+                )}
+            </div>
+
             <header className="home-header">
                 <h1>Inventory Management System</h1>
             </header>
 
             <section className="features-section">
-                <h2>Features</h2>
                 <div className="features">
-                    <FeatureCard
-                        title="Vendors"
-                        description="Handle all activities related to vendors"
-                    />
-                    <FeatureCard
-                        title="Items"
-                        description="Manage items"
-                    />
                     <FeatureCard
                         title="Sale"
                         description="Manage sales"
                     />
+                    <button>Add new sale</button>
+                    <button>Manage Sales</button>
                 </div>
             </section>
         </div>
