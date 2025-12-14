@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import "./Home.css";
 
 function FeatureCard({ title, description }) {
@@ -12,6 +13,7 @@ function FeatureCard({ title, description }) {
 
 export default function Home() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <div className="home-container">
@@ -40,8 +42,8 @@ export default function Home() {
                         title="Sale"
                         description="Manage sales"
                     />
-                    <button>Add new sale</button>
-                    <button>Manage Sales</button>
+                    <button onClick={() => navigate("/sales/add")}>Add new sale</button>
+                    <button>View Sale Details</button>
                 </div>
             </section>
         </div>
