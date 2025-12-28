@@ -9,6 +9,7 @@ import (
 	"github.com/Samith-Ailapperuma/Inventory_Mgt_System/internal/repository"
 	"github.com/Samith-Ailapperuma/Inventory_Mgt_System/internal/service"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -18,6 +19,8 @@ func main() {
 	db := config.ConnectDB()
 	defer db.Close()
 
+	corsConfig := config.LoadCorsConfig()
+
 	vendorRepo := repository.NewVendorRepository(db)
 	salesRepo := repository.NewSalesRepository(db)
 	itemRepo := repository.NewItemRepository(db)
@@ -26,6 +29,14 @@ func main() {
 	itemHandler := service.NewItemHandler(itemRepo)
 
 	router := mux.NewRouter()
+
+	corsHandler := handlers.CORS(
+		handlers.AllowedOrigins(corsConfig.AllowedOrigins),
+		handlers.AllowedMethods(corsConfig.AllowedMethods),
+		handlers.AllowedHeaders(corsConfig.AllowedHeaders),
+		handlers.AllowCredentials(),
+	)
+
 	router.HandleFunc("/vendors", vendorHandler.GetVendors).Methods("GET")
 	router.HandleFunc("/vendors", vendorHandler.CreateVendor).Methods("POST")
 	router.HandleFunc("/allSales", salesHandler.GetAllSales).Methods("GET")
@@ -35,6 +46,5 @@ func main() {
 	router.HandleFunc("/addItem", itemHandler.AddNewItem).Methods("POST")
 
 	log.Println("Server running on :8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
-
+	log.Fatal(http.ListenAndServe(":8080", corsHandler(router)))
 }
