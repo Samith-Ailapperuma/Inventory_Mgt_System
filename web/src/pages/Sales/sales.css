@@ -1,0 +1,14 @@
+.select {
+    margin-left: 10px;
+}
+
+.label {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-sale-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
