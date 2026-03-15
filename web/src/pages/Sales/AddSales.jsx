@@ -132,13 +132,15 @@ export default function AddSales() {
                 </div>
             </label>
 
-            <button onClick={handleAddItem}>Add item</button>
+            <div className="features">
+                <button onClick={handleAddItem}>Add item</button>
 
-            <button
-                onClick={handleCompleteSale}
-                disabled={addedSaleItems.length === 0}
-                style={{ marginTop: "1rem" }}>
-                    Complete Sale</button>
+                <button
+                    onClick={handleCompleteSale}
+                    disabled={addedSaleItems.length === 0}
+                    style={{ marginTop: "1rem" }}>
+                        Complete Sale</button>
+            </div>           
 
             {addedSaleItems.length > 0 && (
                 <div style={{ marginTop: "1.5rem" }}>
