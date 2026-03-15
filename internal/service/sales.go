@@ -56,7 +56,8 @@ func (h *SalesHandler) AddItemToSale(w http.ResponseWriter, r *http.Request) {
 			Sales_Date:  time.Now(),
 			Sale_Amount: 0,
 		}
-		saleId, err := h.Repo.CreateSale(sale)
+		var err error
+		saleId, err = h.Repo.CreateSale(sale)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
