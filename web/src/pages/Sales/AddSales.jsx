@@ -26,7 +26,7 @@ export default function AddSales() {
             alert("Selected item not found");
             return;
         }
-        
+
         const newPendingItem = {
             Item_Id: selectedItemData.Item_Id,
             Item_Name: selectedItemData.Item_Name,
@@ -49,19 +49,19 @@ export default function AddSales() {
 
         var result = null;
         var addItemRequest = null;
-        for(const saleItem of addedSaleItems){
+        for (const saleItem of addedSaleItems) {
             try {
-                if(result!=null){
+                if (result != null) {
                     addItemRequest = {
                         Sale_Id: result.saleId,
                         Qty_Sold: saleItem.Quantity,
                         Item_Id: saleItem.Item_Id
                     }
-                }else {
+                } else {
                     addItemRequest = {
                         Qty_Sold: saleItem.Quantity,
                         Item_Id: saleItem.Item_Id
-                    }    
+                    }
                 }
                 console.log(JSON.stringify(addItemRequest));
                 const response = await fetch("http://localhost:8080/addItemToSale", {
@@ -71,21 +71,21 @@ export default function AddSales() {
                     },
                     body: JSON.stringify(addItemRequest),
                 });
-    
+
                 if (!response.ok) throw new Error("Failed to save sale");
-    
+
                 result = await response.json();
                 console.log("Sale created:", result);
-    
+
                 setAddedSaleItems([]);
                 setSelectedItem("");
                 setQuantity("");
             } catch (err) {
                 console.error(err);
                 alert("Failed to complete sale. Check console for details.");
-            }  
+            }
         }
-        
+
     };
 
     const handleDeleteItem = (indexToRemove) => {
@@ -150,21 +150,55 @@ export default function AddSales() {
                     onClick={handleCompleteSale}
                     disabled={addedSaleItems.length === 0}
                     style={{ marginTop: "1rem" }}>
-                        Complete Sale</button>
-            </div>           
+                    Complete Sale</button>
+            </div>
 
             {addedSaleItems.length > 0 && (
                 <div style={{ marginTop: "1.5rem" }}>
-                    <h3>Items to be added: </h3>
-                    <ul>
-                        {addedSaleItems.map((item, index) => (
-                            <li key={index}>
-                                {item.Item_Name} × {item.Quantity} × ${item.Unit_Price} = ${(item.Quantity * item.Unit_Price).toFixed(2)}
-                            </li>
-                        ))}
-                    </ul>
+                    <h3>Items to be added:</h3>
+
+                    <table className="sales-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {addedSaleItems.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.Item_Id}</td>
+                                    <td>{item.Item_Name}</td>
+                                    <td>{item.Quantity}</td>
+                                    <td>${item.Unit_Price}</td>
+                                    <td>
+                                        ${(item.Quantity * item.Unit_Price).toFixed(2)}
+                                    </td>
+                                    <td>
+                                        <button
+                                            onClick={() => handleDeleteItem(index)}
+                                            className="delete-btn"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colSpan="4"></td>
+                                <td><strong>${grandTotal.toFixed(2)}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-            )}            
+            )}
 
         </div>
     );
