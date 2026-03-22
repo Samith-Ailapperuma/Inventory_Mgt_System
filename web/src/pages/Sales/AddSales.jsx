@@ -88,6 +88,17 @@ export default function AddSales() {
         
     };
 
+    const handleDeleteItem = (indexToRemove) => {
+        setAddedSaleItems(prev =>
+            prev.filter((_, index) => index !== indexToRemove)
+        );
+    };
+
+    const grandTotal = addedSaleItems.reduce(
+        (sum, item) => sum + item.Total_Price,
+        0
+    );
+
     useEffect(() => {
         fetch(`http://localhost:8080/getAllItems`)
             .then((res) => res.json())
