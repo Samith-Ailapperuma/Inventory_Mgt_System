@@ -82,3 +82,21 @@ func (h *SalesHandler) AddItemToSale(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"saleId": saleId})
 }
+
+func (h *SalesHandler) CreateSale(w http.ResponseWriter, r *http.Request) {
+	var salesRequest model.SaleRequest
+	if err := json.NewDecoder(r.Body).Decode(&salesRequest); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	saleId, err := h.Repo.CreateSaleWithItems(salesRequest)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{"saleId": saleId})
+
+}

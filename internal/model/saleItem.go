@@ -5,3 +5,8 @@ type SaleItem struct {
 	Qty_Sold int
 	Item_Id  string
 }
+
+type SaleItemInput struct {
+	Item_Id  string
+	Qty_Sold int
+}

@@ -42,6 +42,7 @@ func main() {
 	router.HandleFunc("/allSales", salesHandler.GetAllSales).Methods("GET")
 	router.HandleFunc("/itemsOfSale", salesHandler.GetAllItemsInSale).Methods("GET")
 	router.HandleFunc("/addItemToSale", salesHandler.AddItemToSale).Methods("POST")
+	router.HandleFunc("/createSale", salesHandler.CreateSale).Methods("POST")
 	router.HandleFunc("/getAllItems", itemHandler.GetAllItems).Methods("GET")
 	router.HandleFunc("/addItem", itemHandler.AddNewItem).Methods("POST")
 

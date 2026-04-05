@@ -65,6 +65,65 @@ func (r *SalesRepository) CreateSale(sale model.Sale) (string, error) {
 	return fmt.Sprintf("%d", id), nil
 }
 
+func (r *SalesRepository) CreateSaleWithItems(req model.SaleRequest) (string, error) {
+	tx, err := r.DB.Begin()
+	if err != nil {
+		return "", fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	result, err := tx.Exec(
+		"INSERT INTO sales (Sales_Date, Sales_Amount) VALUES (?, 0)",
+		req.Sales_Date,
+	)
+	if err != nil {
+		return "", fmt.Errorf("failed to insert sale: %w", err)
+	}
+
+	saleID, err := result.LastInsertId()
+	if err != nil {
+		return "", fmt.Errorf("failed to get sale ID: %w", err)
+	}
+
+	var totalAmount float32 = 0
+
+	for _, item := range req.Items {
+		var unitPrice float32
+
+		err := tx.QueryRow(
+			"SELECT Unit_Price FROM item WHERE Item_Id = ?",
+			item.Item_Id,
+		).Scan(&unitPrice)
+		if err != nil {
+			return "", fmt.Errorf("failed to get unit price for item %s: %w", item.Item_Id, err)
+		}
+
+		_, err = tx.Exec(
+			"INSERT INTO salesItem (Sales_Id, Item_Id, Quantity_Sold) VALUES (?, ?, ?)",
+			saleID, item.Item_Id, item.Qty_Sold,
+		)
+		if err != nil {
+			return "", fmt.Errorf("failed to insert sales item: %w", err)
+		}
+
+		totalAmount += float32(item.Qty_Sold) * unitPrice
+	}
+
+	_, err = tx.Exec(
+		"UPDATE sales SET Sales_Amount = ? WHERE Sales_Id = ?",
+		totalAmount, saleID,
+	)
+	if err != nil {
+		return "", fmt.Errorf("failed to update total amount: %w", err)
+	}
+
+	if err := tx.Commit(); err != nil {
+		return "", fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return fmt.Sprintf("%d", saleID), nil
+}
+
 func (r *SalesRepository) AddItemToSale(saleItem model.SaleItem) error {
 	_, err := r.DB.Exec("INSERT INTO salesItem (Sales_Id, Item_Id, Quantity_Sold) VALUES (?, ?, ?)", saleItem.Sale_Id, saleItem.Item_Id, saleItem.Qty_Sold)
 	return err
