@@ -35,7 +35,23 @@ export default function AddSales() {
             Total_Price: selectedItemData.Unit_Price * Number(quantity),
         };
 
-        setAddedSaleItems(prev => [...prev, newPendingItem]);
+        setAddedSaleItems(prev => {
+            const similarItemInListIndex = prev.findIndex((item) => item.Item_Id === newPendingItem.Item_Id)
+          
+            if(similarItemInListIndex === -1) {
+                return [...prev, newPendingItem];
+            } 
+
+            const newItemsInList = [...addedSaleItems]
+            newItemsInList[similarItemInListIndex] = {
+                ...newItemsInList[similarItemInListIndex],
+                
+                Quantity: newItemsInList[similarItemInListIndex].Quantity + newPendingItem.Quantity,
+                Total_Price: newItemsInList[similarItemInListIndex].Total_Price + newPendingItem.Total_Price
+            }
+
+            return newItemsInList;
+        })
 
         setSelectedItem("");
         setQuantity("");
