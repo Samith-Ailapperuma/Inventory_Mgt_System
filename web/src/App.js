@@ -2,8 +2,9 @@ import React from "react"
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
-import Sales from "./pages/Sales/AddSales";
+import AddSales from "./pages/Sales/AddSales";
 import Vendors from "./pages/Vendors/Vendors";
+import ViewSales from "./pages/Sales/ViewSales";
 
 function App() {
   return (
@@ -17,8 +18,9 @@ function App() {
    <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home/>}/>
-      <Route path="/sales/add" element={<Sales/>}/>
+      <Route path="/sales/add" element={<AddSales/>}/>
       <Route path="/vendors" element={<Vendors/>}/>
+      <Route path="/sales/view" element={<ViewSales/>}/>
     </Routes>
    </BrowserRouter>
   );

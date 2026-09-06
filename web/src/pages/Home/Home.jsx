@@ -43,7 +43,7 @@ export default function Home() {
                         description="Manage sales"
                     />
                     <button onClick={() => navigate("/sales/add")}>Add new sale</button>
-                    <button>View Sale Details</button>
+                    <button onClick={() => navigate("/sales/view")}>View Sale Details</button>
                 </div>
             </section>
         </div>
