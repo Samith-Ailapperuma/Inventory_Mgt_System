@@ -23,7 +23,7 @@ func ConnectDB() *sql.DB {
 	port := os.Getenv("DB_PORT")
 	dbname := os.Getenv("DB_NAME")
 
-	datasourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, host, port, dbname)
+	datasourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?&parseTime=true", user, password, host, port, dbname)
 
 	db, err := sql.Open("mysql", datasourceName)
 
