@@ -16,7 +16,7 @@ func NewSalesRepository(db *sql.DB) *SalesRepository {
 }
 
 func (r *SalesRepository) GetAllSales() ([]model.Sale, error) {
-	rows, err := r.DB.Query("SELECT * FROM Sales")
+	rows, err := r.DB.Query("SELECT Sales_Id, Sales_Date, Sales_Amount FROM Sales")
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func (r *SalesRepository) GetAllSales() ([]model.Sale, error) {
 	var sales []model.Sale
 	for rows.Next() {
 		var sale model.Sale
-		if err := rows.Scan(&sale.Sale_Id, &sale.Sale_Amount, &sale.Sales_Date); err != nil {
+		if err := rows.Scan(&sale.Sale_Id, &sale.Sales_Date, &sale.Sale_Amount); err != nil {
 			return nil, err
 		}
 		sales = append(sales, sale)
